@@ -30,7 +30,7 @@ gsi_image = "system.img.xz"
 
 user = 0 # For keyboard input 
 
-while user != 7:
+while user != 8:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -39,7 +39,7 @@ while user != 7:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -57,10 +57,10 @@ while user != 7:
 		print("\nErasing previous files...")
 		os.system("rmdir /S /Q platform-tools")
 
-		print("\nDownloading", windows, "from Google server, please wait...")
+		print("\nDownloading %s from Google server, please wait..." % windows)
 		windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
 
-		print("\nExtracting the downloaded",windows,"file...")
+		print("\nExtracting the downloaded %s file..." % windows)
 		from zipfile import ZipFile
 		with ZipFile('platform-tools-latest-windows.zip') as zipObj:
 			zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
@@ -102,6 +102,11 @@ while user != 7:
 		print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Settings > OEM unlock > Enable\nAnd plug-in your Android device")
 		os.system("cd platform-tools & fastboot.exe flashing unlock")
 		time.sleep(10)
+
+	elif user == 7:
+		print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\n")
+		app = input("Enter App package name:\n")
+		os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
 	else:
 		print("\nBye")
