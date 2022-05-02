@@ -9,6 +9,7 @@ print("--------------------\nInstalling core components...\nPlease wait\n-------
 os.system("pip install wget")
 os.system("pip install wheel")
 
+# ======================= Imports ===================
 try:
     import lzma
 except ImportError:
@@ -19,6 +20,12 @@ import time # Allows to sleep the code execution
 import lzma # Allows .xz extraction for gsi files
 import sys
 import tarfile
+from pathlib import Path
+import zipfile
+from datetime import datetime
+DATE_FORMAT = '%y%m%d'
+
+# ==================== End of imports ================================
 
 # Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
@@ -30,7 +37,48 @@ gsi_image = "system.img.xz"
 
 user = 0 # For keyboard input 
 
-while user != 10:
+# ============================ Functions ====================
+
+def date_str():
+    """returns the today string year, month, day"""
+    return '{}'.format(datetime.now().strftime(DATE_FORMAT))
+
+def zip_name(path):
+    cur_dir = Path(path).resolve()
+    parent_dir = cur_dir.parents[0]
+    zip_filename = '{}/{}_{}.zip'.format(parent_dir, cur_dir.name, date_str())
+    p_zip = Path(zip_filename)
+    n = 1
+    while p_zip.exists():
+        zip_filename = ('{}/{}_{}_{}.zip'.format(parent_dir, cur_dir.name,
+                                             date_str(), n))
+        p_zip = Path(zip_filename)
+        n += 1
+    return zip_filename
+
+
+def all_files(path):
+    for child in Path(path).iterdir():
+        yield str(child)
+        if child.is_dir():
+            for grand_child in all_files(str(child)):
+                yield str(Path(grand_child))
+
+def zip_dir(path):
+    zip_filename = zip_name(path)
+    zip_file = zipfile.ZipFile(zip_filename, 'w')
+    print('create:', zip_filename)
+    for file in all_files(path):
+        print('adding... ', file)
+        zip_file.write(file)
+    zip_file.close()
+
+
+# ======================== End of Functions ================================
+
+
+# ================= Starting Main ======================
+while user != 11:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -39,7 +87,7 @@ while user != 10:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -124,9 +172,37 @@ while user != 10:
 		print("\nDumped Device Thermal configuration to /PyDroidTools")
 		time.sleep(3)
 
+	elif user == 10:
+		allowed = []
+		print("This will allow you to backup selected files from your Android Device to a compressed .zip file\n")
+		dcim = input("Include /DCIM folder ?\nThis folder includes Camera photos\n (Y/N)")
+		if  dcim.upper() == "Y":
+			allowed.append("DCIM")
+
+		pictures = input("Include /Pictures folder ?\nThis folder includes photos from Social Apps like Twitter, WhatsApp,...\n (Y/N)")
+		if  pictures.upper() == "Y":
+			allowed.append("Pictures")
+
+		downloads = input("Include /Download folder ?\nThis folder includes all your browser downloads\n (Y/N)")
+		if  downloads.upper() == "Y":
+			allowed.append("Download")
+
+		for dirs in allowed:
+			os.system("mkdir backup")
+			os.system("cd platform-tools & adb.exe pull sdcard/%s ../backup " % dirs )
+
+		print("\nDone downloading the files from your devices... \nCreating a zip file...")
+
+		zipdir = zip_dir("backup")
+
+		print("\nErasing temp files...")
+		os.system("rmdir /S /Q backup")
+
+		print("\nBackup completed succesfully!")
+
+
 	else:
 		print("\nBye")
 
-
-
+# ================== End of Main =======================
 
