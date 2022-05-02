@@ -114,6 +114,11 @@ while user != 10:
 		user = input("\nEnter app name (without the .apk extension): \n")
 		os.system("cd platform-tools & adb.exe install -r ../%s.apk " % user)
 
+		ask = input("Remove the installed file?:\n (Y/N)")
+		if ask.upper() == "Y":
+			os.system("del /f %s.apk" % user)
+
+
 	elif user == 9:
 		os.system("cd platform-tools & adb.exe root & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
 		print("\nDumped Device Thermal configuration to /PyDroidTools")
