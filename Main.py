@@ -11,8 +11,9 @@ os.system("pip install wget")
 import wget # Allows URL downloads
 import time
 
-# Static URL from Google Server
+# Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
+pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
 
 # Packages names
 windows = "platform-tools-latest-windows.zip"
@@ -28,9 +29,16 @@ while user != 5:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[1] Download ADB-FASTBOOT Tools\n[2] Check for ADB Devices\n[3] Check for FASTBOOT Devices\n[4] Get Android Phone Logcat\n[5] Exit\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download ADB-FASTBOOT Tools\n[2] Check for ADB Devices\n[3] Check for FASTBOOT Devices\n[4] Get Android Phone Logcat\n[5] Exit\n--------------------------------\n"""))
 
-	if user == 1:
+	if user == 0:
+		print("\nErasing previous version of PyDroidTools...")
+		os.system("del /f Main.py ")
+		print("\nDownloading latest PyDroidTools, please wait...")
+		release = wget.download(pydroidtools, "Main.py")
+
+
+	elif user == 1:
 		print("Erasing previous files...")
 		os.system("rmdir /S /Q platform-tools")
 
@@ -58,7 +66,7 @@ while user != 5:
 
 	elif user == 4:
 		print("Plug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
-		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > logcat.txt")
+		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../logcat.txt")
 
 	else:
 		print("Bye")
