@@ -187,8 +187,17 @@ while user != 11:
 		if  downloads.upper() == "Y":
 			allowed.append("Download")
 
+		music = input("Include /Music folder ?\nThis folder includes .mp3 files\n (Y/N)")
+		if  music.upper() == "Y":
+			allowed.append("Music")
+
+		documents = input("Include /Documents folder ?\nThis folder includes all your documents\n (Y/N)")
+		if  documents.upper() == "Y":
+			allowed.append("Documents")
+
+		os.system("mkdir backup")
+
 		for dirs in allowed:
-			os.system("mkdir backup")
 			os.system("cd platform-tools & adb.exe pull sdcard/%s ../backup " % dirs )
 
 		print("\nDone downloading the files from your devices... \nCreating a zip file...")
