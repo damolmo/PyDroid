@@ -30,7 +30,7 @@ gsi_image = "system.img.xz"
 
 user = 0 # For keyboard input 
 
-while user != 9:
+while user != 10:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -39,7 +39,7 @@ while user != 9:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Dump Thermal config file\n[9] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -109,6 +109,12 @@ while user != 9:
 		os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
 	elif user == 8:
+		print("Place the .APK files into your /PyDroidTools dir and wait ...")
+		time.sleep(3)
+		user = input("\nEnter app name (without the .apk extension): \n")
+		os.system("cd platform-tools & adb.exe install -r ../%s.apk " % user)
+
+	elif user == 9:
 		os.system("cd platform-tools & adb.exe root & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
 		print("\nDumped Device Thermal configuration to /PyDroidTools")
 		time.sleep(3)
