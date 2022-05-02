@@ -3,13 +3,22 @@ PyDroidTools
 Experiments with Python and ADB/fastboot tools
 
 """
-import os # Allows the execution of shell commands
+import os
 
 print("--------------------\nInstalling core components...\nPlease wait\n-----------------------------")
 os.system("pip install wget")
+os.system("pip install wheel")
+
+try:
+    import lzma
+except ImportError:
+    from backports import lzma
 
 import wget # Allows URL downloads
-import time
+import time # Allows to sleep the code execution
+import lzma # Allows .xz extraction for gsi files
+import sys
+import tarfile
 
 # Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
@@ -17,10 +26,11 @@ pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
 
 # Packages names
 windows = "platform-tools-latest-windows.zip"
+gsi_image = "system.img.xz"
 
 user = 0 # For keyboard input 
 
-while user != 5:
+while user != 7:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -29,7 +39,7 @@ while user != 5:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download ADB-FASTBOOT Tools\n[2] Check for ADB Devices\n[3] Check for FASTBOOT Devices\n[4] Get Android Phone Logcat\n[5] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download ADB-FASTBOOT Tools\n[2] Check for ADB Devices\n[3] Check for FASTBOOT Devices\n[4] Get Android Phone Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -72,6 +82,26 @@ while user != 5:
 	elif user == 4:
 		print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../logcat.txt")
+
+	elif user == 5:
+		url = input("\nEnter your GSI URL (Recommended GitHub:\n")
+		gsi = wget.download(url,gsi_image) # Download the GSI
+		with lzma.open('system.img.xz', mode='rt', encoding='utf-8', errors='ignore') as image:
+		 for line in image:
+		 	print(image)
+
+		os.system("cd platform-tools & fastboot.exe devices")
+		print("\nFlashing the Generic System Image...")
+		os.system("cd platform-tools & fastboot.exe flash system.img")
+
+		print("\nErasing temp files...")
+		os.system("del /f system.img.xz ")
+		os.system("del /f system.img")
+
+	elif user == 6:
+		print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Settings > OEM unlock > Enable\nAnd plug-in your Android device")
+		os.system("cd platform-tools & fastboot.exe flashing unlock")
+		time.sleep(10)
 
 	else:
 		print("\nBye")
