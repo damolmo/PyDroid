@@ -39,7 +39,7 @@ while user != 7:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download ADB-FASTBOOT Tools\n[2] Check for ADB Devices\n[3] Check for FASTBOOT Devices\n[4] Get Android Phone Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
