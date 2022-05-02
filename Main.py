@@ -25,6 +25,7 @@ import zipfile
 from datetime import datetime
 DATE_FORMAT = '%y%m%d'
 
+
 # ==================== End of imports ================================
 
 # Static URLs
@@ -33,7 +34,7 @@ pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
 
 # Packages names
 windows = "platform-tools-latest-windows.zip"
-gsi_image = "system.img.xz"
+gsi_image = "system.img"
 
 user = 0 # For keyboard input 
 
@@ -132,18 +133,23 @@ while user != 11:
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../logcat.txt")
 
 	elif user == 5:
-		url = input("\nEnter your GSI URL (Recommended GitHub:\n")
-		gsi = wget.download(url,gsi_image) # Download the GSI
-		with lzma.open('system.img.xz', mode='rt', encoding='utf-8', errors='ignore') as image:
-		 for line in image:
-		 	print(image)
+		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL	")
 
+		if resource == 1:
+			print("\nPut your gsi file into your /PyDroidFoler and press enter..")
+			empty = input("")
+			gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
+			os.system("mv %s.img %s" % (gsi, gsi_image))
+
+		else:
+			url = input("\nEnter your GSI URL (Recommended GitHub:\n")
+			gsi = wget.download(url,gsi_image) # Download the GSI
+		
 		os.system("cd platform-tools & fastboot.exe devices")
 		print("\nFlashing the Generic System Image...")
 		os.system("cd platform-tools & fastboot.exe flash system.img")
 
 		print("\nErasing temp files...")
-		os.system("del /f system.img.xz ")
 		os.system("del /f system.img")
 
 	elif user == 6:
