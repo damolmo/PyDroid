@@ -19,7 +19,7 @@ windows = "platform-tools-latest-windows.zip"
 
 user = 0 # For keyboard input 
 
-while user != 9:
+while user != 5:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -47,12 +47,12 @@ while user != 9:
 
 
 	elif user == 2:
-		print("\n----------------ADB Devices Found\n---------------\nIf your device is not listed, check your USB cable")
+		print("\n---------------- ADB Devices Found ---------------\nIf your device is not listed, check your USB cable")
 		os.system("cd platform-tools & adb.exe devices")
 		time.sleep(5)
 
 	elif user == 3:
-		print("\n----------------FASTBOOT Devices Found\n---------------\nIf your device is not listed, check your USB cable")
+		print("\n---------------- FASTBOOT Devices Found ---------------\nIf your device is not listed, check your USB cable")
 		os.system("cd platform-tools & fastboot.exe devices")
 		time.sleep(5)
 
