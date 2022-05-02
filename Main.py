@@ -34,15 +34,20 @@ while user != 5:
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
 		os.system("del /f Main.py ")
+
 		print("\nDownloading latest PyDroidTools, please wait...")
 		release = wget.download(pydroidtools, "Main.py")
 
+		print("\nExiting from previous PyDroidTools version and launching new version...")
+		user = 5
+		os.system("python Main.py")
+
 
 	elif user == 1:
-		print("Erasing previous files...")
+		print("\nErasing previous files...")
 		os.system("rmdir /S /Q platform-tools")
 
-		print("Downloading", windows, "from Google server, please wait...")
+		print("\nDownloading", windows, "from Google server, please wait...")
 		windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
 
 		print("\nExtracting the downloaded",windows,"file...")
@@ -50,7 +55,7 @@ while user != 5:
 		with ZipFile('platform-tools-latest-windows.zip') as zipObj:
 			zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
 
-		print("Erasing temp files...")
+		print("\nErasing temp files...")
 		os.system("del /f platform-tools-latest-windows.zip ")
 
 
@@ -65,11 +70,11 @@ while user != 5:
 		time.sleep(5)
 
 	elif user == 4:
-		print("Plug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
+		print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../logcat.txt")
 
 	else:
-		print("Bye")
+		print("\nBye")
 
 
 
