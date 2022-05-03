@@ -6,7 +6,7 @@ Experiments with Python and ADB/fastboot tools
 import os
 
 #======================== Beginning of dependencies ==============
-print("--------------------\nInstalling core components...\nPlease wait\n-----------------------------")
+print("-----------------------------\nInstalling core components...\nPlease wait\n-----------------------------")
 os.system("pip install wheel")
 os.system("pip install wget")
 # =================== End of dependencies ===========================================
@@ -97,26 +97,26 @@ user = 0 # For keyboard input
 
 
 # ================= Beginning of Main ======================
-while user != 13:
+while user != "":
 	my_device_model = check_device()
 	if my_device_model == "No ADB device found" :
-		user = int(input(
+		user = input(
 			"""
-█▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀
-█▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█
-		\n---------------------------------------\nCurrent Device : %s\n-------------------------------------\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Send file over ADB\n[13] Exit\n--------------------------------\n""" % my_device_model))
+ ----------------------------------------------
+| █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
+| █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
+|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a GSI                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
 
 	else:
-		user = int(input(
-		"""
-		
+		user = input(
+			"""
+ ----------------------------------------------
+| █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
+| █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
+|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a GSI                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
 
-█▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀
-█▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█
-		\n---------------------------------------\nCurrent Device : %s-------------------------------------\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Send file over ADB\n[13] Exit\n--------------------------------\n""" % my_device_model))
 
-
-	if user == 0:
+	if user == "0":
 		print("\nErasing previous version of PyDroidTools...")
 		os.system("del /f Main.py ")
 
@@ -124,11 +124,11 @@ while user != 13:
 		release = wget.download(pydroidtools, "Main.py")
 
 		print("\nExiting from previous PyDroidTools version and launching new version...")
-		user = 13
+		user = "13"
 		os.system("python Main.py")
 
 
-	elif user == 1:
+	elif user == "1":
 		print("\nErasing previous files...")
 		os.system("rmdir /S /Q platform-tools")
 
@@ -144,23 +144,23 @@ while user != 13:
 		os.system("del /f platform-tools-latest-windows.zip ")
 
 
-	elif user == 2:
+	elif user == "2":
 		print("\n---------------- ADB Devices Found ---------------\nIf your device is not listed, check your USB cable")
 		os.system("cd platform-tools & adb.exe devices")
 		time.sleep(5)
 
-	elif user == 3:
+	elif user == "3":
 		print("\n---------------- FASTBOOT Devices Found ---------------\nIf your device is not listed, check your USB cable")
 		os.system("cd platform-tools & fastboot.exe devices")
 		time.sleep(5)
 
-	elif user == 4:
+	elif user == "4":
 		logcat = "logcat" + "-" + my_device_model + ".txt"
 		logcat = logcat.replace("\n.txt", ".txt")
 		print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
 
-	elif user == 5:
+	elif user == "5":
 		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL	")
 
 		if resource == 1:
@@ -180,17 +180,17 @@ while user != 13:
 		print("\nErasing temp files...")
 		os.system("del /f system.img")
 
-	elif user == 6:
+	elif user == "6":
 		print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Options > OEM unlock > Enable\nAnd plug-in your Android device")
 		os.system("cd platform-tools & fastboot.exe flashing unlock")
 		time.sleep(10)
 
-	elif user == 7:
+	elif user == "7":
 		print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\n")
 		app = input("Enter App package name:\n")
 		os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
-	elif user == 8:
+	elif user == "8":
 		print("Place the .APK files into your /PyDroidTools dir and wait ...")
 		time.sleep(3)
 		user = input("\nEnter app name (without the .apk extension): \n")
@@ -201,12 +201,12 @@ while user != 13:
 			os.system("del /f %s.apk" % user)
 
 
-	elif user == 9:
+	elif user == "9":
 		os.system("cd platform-tools & adb.exe root & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
 		print("\nDumped Device Thermal configuration to /PyDroidTools")
 		time.sleep(3)
 
-	elif user == 10:
+	elif user == "10":
 		allowed = []
 		print("This will allow you to backup selected files from your Android Device to a compressed .zip file\n")
 		dcim = input("Include /DCIM folder ?\nThis folder includes Camera photos\n (Y/N)")
@@ -242,8 +242,9 @@ while user != 13:
 		os.system("rmdir /S /Q backup")
 
 		print("\nBackup completed succesfully!")
+		time.sleep(2)
 
-	elif user == 11:
+	elif user == "11":
 		my_device_model_img = check_device() + ".img"
 		my_device_model_img = my_device_model_img.replace("\n.img", ".img")
 		ask = input("Choose device partitions type: \n[1] A-only partition (2011-2017 devices\n[2] A|B Partitions (2017-2022 devices)\n[3] Check for all partitions (unknown partitions)\n")
@@ -260,17 +261,19 @@ while user != 13:
 			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
 
 
-	elif user == 12:
+	elif user == "12":
 		file = input("\n[1] Same Directory \n[2] Paste location \n")
 		if file == "1":
 			file = input("Enter the full file name : \n")
 			os.system("cd platform-tools & adb.exe root & adb.exe push ../%s sdcard/Download/" % file)
 			print("File %s copied succesfully to /Download" % file)
+			time.sleep(2)
 
 		else:
 			file = input("Enter the full file location : \n")
 			os.system("cd platform-tools & adb.exe root & adb.exe push %s sdcard/Download/" % file)
 			print("File %s copied succesfully to /Download" % file)
+			time.sleep(2)
 
 # ================== End of Main =======================
 
