@@ -124,7 +124,7 @@ while user != "":
 		release = wget.download(pydroidtools, "Main.py")
 
 		print("\nExiting from previous PyDroidTools version and launching new version...")
-		user = "13"
+		user = ""
 		os.system("python Main.py")
 
 
@@ -161,21 +161,22 @@ while user != "":
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
 
 	elif user == "5":
-		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL	")
+		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n	")
 
-		if resource == 1:
+		if resource == "1":
 			print("\nPut your gsi file into your /PyDroidFoler and press enter..")
 			empty = input("")
 			gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
-			os.system("mv %s.img %s" % (gsi, gsi_image))
+			gsi = gsi + ".img"
 
 		else:
 			url = input("\nEnter your GSI URL (Recommended GitHub:\n")
 			gsi = wget.download(url,gsi_image) # Download the GSI
+			gsi = gsi_image
 		
 		os.system("cd platform-tools & fastboot.exe devices")
 		print("\nFlashing the Generic System Image...")
-		os.system("cd platform-tools & fastboot.exe flash system.img")
+		os.system("cd platform-tools & fastboot.exe flash %s" % gsi)
 
 		print("\nErasing temp files...")
 		os.system("del /f system.img")
