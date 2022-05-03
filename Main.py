@@ -187,9 +187,17 @@ while user != "":
 		time.sleep(10)
 
 	elif user == "7":
-		print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\n")
-		app = input("Enter App package name:\n")
-		os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
+		print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\nOr list all apps packages")
+		ask = input("\n[1] List all apps packages\n[2] Enter app package\n")
+
+		if ask == "1" :
+			os.system("cd platform-tools & adb.exe shell pm list packages")
+			app = input("Enter App package name:\n")
+			os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
+
+		else :
+			app = input("Enter App package name:\n")
+			os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
 	elif user == "8":
 		print("Place the .APK files into your /PyDroidTools dir and wait ...")
