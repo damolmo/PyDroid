@@ -31,15 +31,6 @@ import subprocess
 import subprocess
 # ==================== End of imports ================================
 
-# Static URLs
-adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
-pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
-
-# Packages names
-windows = "platform-tools-latest-windows.zip"
-gsi_image = "system.img"
-
-user = 0 # For keyboard input 
 
 # ============================ Beginning of Functions ====================
 
@@ -87,11 +78,22 @@ def check_device():
 	except subprocess.CalledProcessError as e:
 		my_device_model = str("No ADB device found")
 
-
-
 	return my_device_model
 
 # ======================== End of Functions ================================
+
+# =================== Beginning of variables=============
+# Static URLs
+adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
+pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
+
+# Packages names
+windows = "platform-tools-latest-windows.zip"
+gsi_image = "system.img"
+
+user = 0 # For keyboard input 
+
+# ==================== End of variables ===================
 
 
 # ================= Beginning of Main ======================
@@ -275,9 +277,6 @@ while user != 13:
 			file = input("Enter the full file location : \n")
 			os.system("cd platform-tools & adb.exe root & adb.exe push %s sdcard/Download/" % file)
 			print("File %s copied succesfully to /Download" % file)
-
-	else:
-		print("\nBye")
 
 # ================== End of Main =======================
 
