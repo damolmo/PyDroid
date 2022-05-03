@@ -24,8 +24,8 @@ from pathlib import Path
 import zipfile
 from datetime import datetime
 DATE_FORMAT = '%y%m%d'
-
-
+import subprocess
+import subprocess
 # ==================== End of imports ================================
 
 # Static URLs
@@ -79,7 +79,7 @@ def zip_dir(path):
 
 
 # ================= Starting Main ======================
-while user != 11:
+while user != 12:
 	user = int(input(
 		"""
 	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
@@ -88,7 +88,7 @@ while user != 11:
 	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
 	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
 	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Exit\n--------------------------------\n"""))
+	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Exit\n--------------------------------\n"""))
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -215,6 +215,14 @@ while user != 11:
 
 		print("\nBackup completed succesfully!")
 
+	elif user == 11:
+		device = subprocess.check_output("cd platform-tools & adb shell getprop ro.product.model", shell=True)
+		device = device.decode("utf-8")
+		my_device_model = str(device)
+		my_device_model = my_device_model.replace(" ", "")
+		my_device_model = my_device_model + ".img"
+		my_device_model = my_device_model.replace("\n.img", ".img")
+		os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot-%s" % my_device_model)
 
 	else:
 		print("\nBye")
