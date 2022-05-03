@@ -74,21 +74,48 @@ def zip_dir(path):
         zip_file.write(file)
     zip_file.close()
 
+def check_device():
+	try:
+		my_device_model = subprocess.check_output("cd platform-tools & adb shell getprop ro.product.model", shell=True, )
+		my_device_model = my_device_model.decode("utf-8")
+		my_device_model = str(my_device_model)
+		my_device_model = my_device_model.replace(" ", "")
+
+	except subprocess.CalledProcessError as e:
+		my_device_model = str("No ADB device found")
+
+
+
+	return my_device_model
 
 # ======================== End of Functions ================================
 
 
 # ================= Starting Main ======================
 while user != 12:
-	user = int(input(
+	my_device_model = check_device()
+	if my_device_model == "No ADB device found" :
+		user = int(input(
+			"""
+		██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
+		██╔══██╗╚██╗░██╔╝██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝
+		██████╔╝░╚████╔╝░██║░░██║██████╔╝██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░╚█████╗░
+		██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
+		██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
+		╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
+		\n---------------------------------------\nCurrent Device : %s\n-------------------------------------\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Exit\n--------------------------------\n""" % my_device_model))
+
+	else:
+		user = int(input(
 		"""
-	██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
-	██╔══██╗╚██╗░██╔╝██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝
-	██████╔╝░╚████╔╝░██║░░██║██████╔╝██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░╚█████╗░
-	██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
-	██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
-	╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
-	\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Exit\n--------------------------------\n"""))
+		██████╗░██╗░░░██╗██████╗░██████╗░░█████╗░██╗██████╗░████████╗░█████╗░░█████╗░██╗░░░░░░██████╗
+		██╔══██╗╚██╗░██╔╝██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝
+		██████╔╝░╚████╔╝░██║░░██║██████╔╝██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░╚█████╗░
+		██╔═══╝░░░╚██╔╝░░██║░░██║██╔══██╗██║░░██║██║██║░░██║░░░██║░░░██║░░██║██║░░██║██║░░░░░░╚═══██╗
+		██║░░░░░░░░██║░░░██████╔╝██║░░██║╚█████╔╝██║██████╔╝░░░██║░░░╚█████╔╝╚█████╔╝███████╗██████╔╝
+		╚═╝░░░░░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝╚═════╝░░░░╚═╝░░░░╚════╝░░╚════╝░╚══════╝╚═════╝░
+		\n---------------------------------------\nCurrent Device : %s-------------------------------------\nChoose one of the following options: \n-------------------------------\n[0] Upgrade PyDroidTools\n[1] Download Platform-Tools\n[2] Check for ADB Devices\n[3] Check for Fastboot Devices\n[4] Get Android Device Logcat\n[5] Flash a GSI\n[6] Unlock Android Bootloader\n[7] Remove Android App (Bloatware)\n[8] Install Android App \n[9] Dump Thermal config file\n[10] Android Device Backup \n[11] Backup current Android boot.img\n[12] Exit\n--------------------------------\n""" % my_device_model))
+
 
 	if user == 0:
 		print("\nErasing previous version of PyDroidTools...")
@@ -129,8 +156,10 @@ while user != 12:
 		time.sleep(5)
 
 	elif user == 4:
+		logcat = "logcat" + "-" + my_device_model + ".txt"
+		logcat = logcat.replace("\n.txt", ".txt")
 		print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
-		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../logcat.txt")
+		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
 
 	elif user == 5:
 		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL	")
@@ -216,13 +245,10 @@ while user != 12:
 		print("\nBackup completed succesfully!")
 
 	elif user == 11:
-		device = subprocess.check_output("cd platform-tools & adb shell getprop ro.product.model", shell=True)
-		device = device.decode("utf-8")
-		my_device_model = str(device)
-		my_device_model = my_device_model.replace(" ", "")
-		my_device_model = my_device_model + ".img"
-		my_device_model = my_device_model.replace("\n.img", ".img")
-		os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot-%s" % my_device_model)
+		my_device_model_img = check_device() + ".img"
+		my_device_model_img = my_device_model_img.replace("\n.img", ".img")
+		print(my_device_model_img)
+		os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot-%s" % my_device_model_img)
 
 	else:
 		print("\nBye")
