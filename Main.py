@@ -5,11 +5,14 @@ Experiments with Python and ADB/fastboot tools
 """
 import os
 
+#======================== Beginning of dependencies ==============
 print("--------------------\nInstalling core components...\nPlease wait\n-----------------------------")
-os.system("pip install wget")
 os.system("pip install wheel")
+os.system("pip install wget")
+# =================== End of dependencies ===========================================
 
-# ======================= Imports ===================
+
+# ======================= Beginning of Imports ===================
 try:
     import lzma
 except ImportError:
@@ -38,7 +41,7 @@ gsi_image = "system.img"
 
 user = 0 # For keyboard input 
 
-# ============================ Functions ====================
+# ============================ Beginning of Functions ====================
 
 def date_str():
     """returns the today string year, month, day"""
@@ -91,7 +94,7 @@ def check_device():
 # ======================== End of Functions ================================
 
 
-# ================= Starting Main ======================
+# ================= Beginning of Main ======================
 while user != 13:
 	my_device_model = check_device()
 	if my_device_model == "No ADB device found" :
@@ -125,7 +128,7 @@ while user != 13:
 		release = wget.download(pydroidtools, "Main.py")
 
 		print("\nExiting from previous PyDroidTools version and launching new version...")
-		user = 5
+		user = 13
 		os.system("python Main.py")
 
 
