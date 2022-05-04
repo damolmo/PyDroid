@@ -176,7 +176,7 @@ while user != "":
 		
 		os.system("cd platform-tools & fastboot.exe devices")
 		print("\nFlashing the Generic System Image...")
-		os.system("cd platform-tools & fastboot.exe flash %s" % gsi)
+		os.system("cd platform-tools & fastboot.exe flash system %s" % gsi)
 
 		print("\nErasing temp files...")
 		os.system("del /f system.img")
