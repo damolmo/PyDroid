@@ -14,12 +14,18 @@
 # System Requirements
 • Windows 7 or later<br/>
 • <a href="https://www.python.org/downloads/">Python 3.10 version or newer</a><br/>
-• <a href="https://github.com/git-for-windows/git/releases/latest">Git for Windows</a>
 
 # Installation
+• Command Line Version:
+
 To get started, paste the following command into your Windows cmd/PowerShell
 ```
 git clone https://github.com/daviiid99/PyDroid PyDroid
 cd PyDroid
 python Main.py
 ```
+<br/>
+• Executable Version:
+
+Get the latest Windows .exe from <a href="https://github.com/daviiid99/PyDroid/releases">Releases</a>
+
