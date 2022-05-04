@@ -12,7 +12,7 @@
 <img src = "src/screenshot.png">
 
 # System Requirements
-• Windows 7 or later
+• Windows 7 or later<br/>
 • <a href="https://www.python.org/downloads/">Python 3.10 version or newer</a><br/>
 • <a href="https://github.com/git-for-windows/git/releases/latest">Git for Windows</a>
 
