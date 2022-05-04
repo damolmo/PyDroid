@@ -1,6 +1,6 @@
 ```
-█▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀
-█▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█
+█▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ 
+█▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀
   ```
   >Simple Python program powered by Android Platform-Tools 
   <br/>
@@ -19,7 +19,7 @@
 # Installation
 To get started, paste the following command into your Windows cmd/PowerShell
 ```
-git clone https://github.com/daviiid99/PyDroidTools PyDroidTools
+git clone https://github.com/daviiid99/PyDroid PyDroid
 cd PyDroidTools
 python Main.py
 ```
