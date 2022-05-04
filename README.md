@@ -20,6 +20,6 @@
 To get started, paste the following command into your Windows cmd/PowerShell
 ```
 git clone https://github.com/daviiid99/PyDroid PyDroid
-cd PyDroidTools
+cd PyDroid
 python Main.py
 ```
