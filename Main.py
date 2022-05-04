@@ -105,7 +105,7 @@ while user != "":
  ----------------------------------------------
 | █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
 | █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a GSI                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
+|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
 
 	else:
 		user = input(
@@ -113,7 +113,7 @@ while user != "":
  ----------------------------------------------
 | █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
 | █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a GSI                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
+|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image                               |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
 
 
 	if user == "0":
@@ -161,10 +161,10 @@ while user != "":
 		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
 
 	elif user == "5":
-		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n	")
+		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n")
 
 		if resource == "1":
-			print("\nPut your gsi file into your /PyDroidFoler and press enter..")
+			print("\nPut your gsi file into your /PyDroidTools Folder and press enter..")
 			empty = input("")
 			gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
 			gsi = gsi + ".img"
@@ -173,10 +173,18 @@ while user != "":
 			url = input("\nEnter your GSI URL (Recommended GitHub:\n")
 			gsi = wget.download(url,gsi_image) # Download the GSI
 			gsi = gsi_image
-		
-		os.system("cd platform-tools & fastboot.exe devices")
-		print("\nFlashing the Generic System Image...")
-		os.system("cd platform-tools & fastboot.exe flash system %s" % gsi)
+
+		user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[3] Slot system_b\n")
+
+		if user == "1" :
+			os.system("cd platform-tools & fastboot.exe devices")
+			print("\nFlashing the Generic System Image...")
+			os.system("cd platform-tools & fastboot.exe flash system_a %s" % gsi)
+
+		else :
+			os.system("cd platform-tools & fastboot.exe devices")
+			print("\nFlashing the Generic System Image...")
+			os.system("cd platform-tools & fastboot.exe flash system_b %s" % gsi)
 
 		print("\nErasing temp files...")
 		os.system("del /f system.img")
