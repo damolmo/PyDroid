@@ -10,6 +10,7 @@ print("-----------------------------\nInstalling core components...\nPlease wait
 os.system("pip install wheel")
 os.system("pip install wget")
 os.system("pip install pyinstaller")
+os.system("pip install pyfiglet==0.7")
 # =================== End of dependencies ===========================================
 
 
@@ -30,6 +31,7 @@ from datetime import datetime
 import subprocess
 import subprocess
 from zipfile import ZipFile
+import pyfiglet
 # ==================== End of imports ================================
 
 
@@ -95,6 +97,17 @@ ota_package = "android_ota.zip"
 # Other variables
 DATE_FORMAT = '%y%m%d'
 user = 0 # For keyboard input 
+header ="""
+ ----------------------------------------------
+|     ____        ____            _     _      |
+|    |  _ \ _   _|  _ \ _ __ ___ (_) __| |     |
+|    | |_) | | | | | | | '__/ _ \| |/ _` |     |
+|    |  __/| |_| | |_| | | | (_) | | (_| |     |
+|    |_|    \__, |____/|_|  \___/|_|\__,_|     |
+|           |___/                              |
+|                                              |
+|----------------------------------------------|
+"""
 
 # ==================== End of variables ===================
 
@@ -103,20 +116,10 @@ user = 0 # For keyboard input
 while user != "":
 	my_device_model = check_device()
 	if my_device_model == "No ADB device found" :
-		user = input(
-			"""
- ----------------------------------------------
-| █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
-| █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n|----------------------------------------------|    \n| Version 1.0                       ©daviiid99 |\n ----------------------------------------------    \n""" % my_device_model)
+		user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n|----------------------------------------------|    \n| Version 1.0                       ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 	else:
-		user = input(
-			"""
- ----------------------------------------------
-| █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
-| █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n|----------------------------------------------|    \n| Version 1.0                       ©daviiid99 |\n ----------------------------------------------    \n""" % my_device_model)
+		user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n|----------------------------------------------|    \n| Version 1.0                       ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 	match user:
 
 		case "0":
