@@ -219,7 +219,7 @@ while user != "":
 
 
 	elif user == "9":
-		os.system("cd platform-tools & adb.exe root & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
+		os.system("cd platform-tools & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
 		print("\nDumped Device Thermal configuration to /PyDroidTools")
 		time.sleep(3)
 
@@ -282,13 +282,13 @@ while user != "":
 		file = input("\n[1] Same Directory \n[2] Paste location \n")
 		if file == "1":
 			file = input("Enter the full file name : \n")
-			os.system("cd platform-tools & adb.exe root & adb.exe push ../%s sdcard/Download/" % file)
+			os.system("cd platform-tools & adb.exe push ../%s sdcard/Download/" % file)
 			print("File %s copied succesfully to /Download" % file)
 			time.sleep(2)
 
 		else:
 			file = input("Enter the full file location : \n")
-			os.system("cd platform-tools & adb.exe root & adb.exe push %s sdcard/Download/" % file)
+			os.system("cd platform-tools & adb.exe push %s sdcard/Download/" % file)
 			print("File %s copied succesfully to /Download" % file)
 			time.sleep(2)
 
