@@ -114,183 +114,183 @@ while user != "":
 | █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
 | █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
 |----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
+	match user:
+
+		case "0":
+			print("\nErasing previous version of PyDroidTools...")
+			os.system("del /f Main.py ")
+
+			print("\nDownloading latest PyDroidTools, please wait...")
+			release = wget.download(pydroidtools, "Main.py")
+
+			print("\nExiting from previous PyDroidTools version and launching new version...")
+			user = ""
+			os.system("python Main.py")
 
 
-	if user == "0":
-		print("\nErasing previous version of PyDroidTools...")
-		os.system("del /f Main.py ")
+		case "1":
+			print("\nErasing previous files...")
+			os.system("rmdir /S /Q platform-tools")
 
-		print("\nDownloading latest PyDroidTools, please wait...")
-		release = wget.download(pydroidtools, "Main.py")
+			print("\nDownloading %s from Google server, please wait..." % windows)
+			windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
 
-		print("\nExiting from previous PyDroidTools version and launching new version...")
-		user = ""
-		os.system("python Main.py")
+			print("\nExtracting the downloaded %s file..." % windows)
+			from zipfile import ZipFile
+			with ZipFile('platform-tools-latest-windows.zip') as zipObj:
+				zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
 
-
-	elif user == "1":
-		print("\nErasing previous files...")
-		os.system("rmdir /S /Q platform-tools")
-
-		print("\nDownloading %s from Google server, please wait..." % windows)
-		windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
-
-		print("\nExtracting the downloaded %s file..." % windows)
-		from zipfile import ZipFile
-		with ZipFile('platform-tools-latest-windows.zip') as zipObj:
-			zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
-
-		print("\nErasing temp files...")
-		os.system("del /f platform-tools-latest-windows.zip ")
+			print("\nErasing temp files...")
+			os.system("del /f platform-tools-latest-windows.zip ")
 
 
-	elif user == "2":
-		print("\n---------------- ADB Devices Found ---------------\nIf your device is not listed, check your USB cable")
-		os.system("cd platform-tools & adb.exe devices")
-		time.sleep(5)
+		case "2":
+			print("\n---------------- ADB Devices Found ---------------\nIf your device is not listed, check your USB cable")
+			os.system("cd platform-tools & adb.exe devices")
+			time.sleep(5)
 
-	elif user == "3":
-		print("\n---------------- FASTBOOT Devices Found ---------------\nIf your device is not listed, check your USB cable")
-		os.system("cd platform-tools & fastboot.exe devices")
-		time.sleep(5)
-
-	elif user == "4":
-		logcat = "logcat" + "-" + my_device_model + ".txt"
-		logcat = logcat.replace("\n.txt", ".txt")
-		print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
-		os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
-
-	elif user == "5":
-		resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n")
-
-		if resource == "1":
-			print("\nPut your gsi file into your /PyDroidTools Folder and press enter..")
-			empty = input("")
-			gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
-			gsi = gsi + ".img"
-
-		else:
-			url = input("\nEnter your GSI URL (Recommended GitHub:\n")
-			gsi = wget.download(url,gsi_image) # Download the GSI
-			gsi = gsi_image
-
-		user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[3] Slot system_b\n")
-
-		if user == "1" :
+		case "3":
+			print("\n---------------- FASTBOOT Devices Found ---------------\nIf your device is not listed, check your USB cable")
 			os.system("cd platform-tools & fastboot.exe devices")
-			print("\nFlashing the Generic System Image...")
-			os.system("cd platform-tools & fastboot.exe flash system_a %s" % gsi)
+			time.sleep(5)
 
-		else :
-			os.system("cd platform-tools & fastboot.exe devices")
-			print("\nFlashing the Generic System Image...")
-			os.system("cd platform-tools & fastboot.exe flash system_b %s" % gsi)
+		case "4":
+			logcat = "logcat" + "-" + my_device_model + ".txt"
+			logcat = logcat.replace("\n.txt", ".txt")
+			print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
+			os.system("cd platform-tools & adb.exe logcat -d -b main -b system -b events -v time > ../%s" % logcat)
 
-		print("\nErasing temp files...")
-		os.system("del /f system.img")
+		case "5":
+			resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n")
 
-	elif user == "6":
-		print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Options > OEM unlock > Enable\nAnd plug-in your Android device")
-		os.system("cd platform-tools & fastboot.exe flashing unlock")
-		time.sleep(10)
+			if resource == "1":
+				print("\nPut your gsi file into your /PyDroidTools Folder and press enter..")
+				empty = input("")
+				gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
+				gsi = gsi + ".img"
 
-	elif user == "7":
-		print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\nOr list all apps packages")
-		ask = input("\n[1] List all apps packages\n[2] Enter app package\n")
+			else:
+				url = input("\nEnter your GSI URL (Recommended GitHub:\n")
+				gsi = wget.download(url,gsi_image) # Download the GSI
+				gsi = gsi_image
 
-		if ask == "1" :
-			os.system("cd platform-tools & adb.exe shell pm list packages")
-			app = input("Enter App package name:\n")
-			os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
+			user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[3] Slot system_b\n")
 
-		else :
-			app = input("Enter App package name:\n")
-			os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
+			if user == "1" :
+				os.system("cd platform-tools & fastboot.exe devices")
+				print("\nFlashing the Generic System Image...")
+				os.system("cd platform-tools & fastboot.exe flash system_a %s" % gsi)
 
-	elif user == "8":
-		print("Place the .APK files into your /PyDroidTools dir and wait ...")
-		time.sleep(3)
-		user = input("\nEnter app name (without the .apk extension): \n")
-		os.system("cd platform-tools & adb.exe install -r ../%s.apk " % user)
+			else :
+				os.system("cd platform-tools & fastboot.exe devices")
+				print("\nFlashing the Generic System Image...")
+				os.system("cd platform-tools & fastboot.exe flash system_b %s" % gsi)
 
-		ask = input("Remove the installed file?:\n (Y/N)")
-		if ask.upper() == "Y":
-			os.system("del /f %s.apk" % user)
+			print("\nErasing temp files...")
+			os.system("del /f system.img")
 
+		case "6":
+			print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Options > OEM unlock > Enable\nAnd plug-in your Android device")
+			os.system("cd platform-tools & fastboot.exe flashing unlock")
+			time.sleep(10)
 
-	elif user == "9":
-		os.system("cd platform-tools & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
-		print("\nDumped Device Thermal configuration to /PyDroidTools")
-		time.sleep(3)
+		case "7":
+			print("\nTo remove a preinstalled Android App, go to the settings of your app and search the package name\nExample 'com.android.vending'\nOr list all apps packages")
+			ask = input("\n[1] List all apps packages\n[2] Enter app package\n")
 
-	elif user == "10":
-		allowed = []
-		print("This will allow you to backup selected files from your Android Device to a compressed .zip file\n")
-		dcim = input("Include /DCIM folder ?\nThis folder includes Camera photos\n (Y/N)")
-		if  dcim.upper() == "Y":
-			allowed.append("DCIM")
+			if ask == "1" :
+				os.system("cd platform-tools & adb.exe shell pm list packages")
+				app = input("Enter App package name:\n")
+				os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
-		pictures = input("Include /Pictures folder ?\nThis folder includes photos from Social Apps like Twitter, WhatsApp,...\n (Y/N)")
-		if  pictures.upper() == "Y":
-			allowed.append("Pictures")
+			else :
+				app = input("Enter App package name:\n")
+				os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
-		downloads = input("Include /Download folder ?\nThis folder includes all your browser downloads\n (Y/N)")
-		if  downloads.upper() == "Y":
-			allowed.append("Download")
+		case "8":
+			print("Place the .APK files into your /PyDroidTools dir and wait ...")
+			time.sleep(3)
+			user = input("\nEnter app name (without the .apk extension): \n")
+			os.system("cd platform-tools & adb.exe install -r ../%s.apk " % user)
 
-		music = input("Include /Music folder ?\nThis folder includes .mp3 files\n (Y/N)")
-		if  music.upper() == "Y":
-			allowed.append("Music")
-
-		documents = input("Include /Documents folder ?\nThis folder includes all your documents\n (Y/N)")
-		if  documents.upper() == "Y":
-			allowed.append("Documents")
-
-		os.system("mkdir backup")
-
-		for dirs in allowed:
-			os.system("cd platform-tools & adb.exe pull sdcard/%s ../backup " % dirs )
-
-		print("\nDone downloading the files from your devices... \nCreating a zip file...")
-
-		zipdir = zip_dir("backup")
-
-		print("\nErasing temp files...")
-		os.system("rmdir /S /Q backup")
-
-		print("\nBackup completed succesfully!")
-		time.sleep(2)
-
-	elif user == "11":
-		my_device_model_img = check_device() + ".img"
-		my_device_model_img = my_device_model_img.replace("\n.img", ".img")
-		ask = input("Choose device partitions type: \n[1] A-only partition (2011-2017 devices\n[2] A|B Partitions (2017-2022 devices)\n[3] Check for all partitions (unknown partitions)\n")
-		if ask == "1" :
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
-
-		elif ask == "2" :
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
-
-		else :
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
-			os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
+			ask = input("Remove the installed file?:\n (Y/N)")
+			if ask.upper() == "Y":
+				os.system("del /f %s.apk" % user)
 
 
-	elif user == "12":
-		file = input("\n[1] Same Directory \n[2] Paste location \n")
-		if file == "1":
-			file = input("Enter the full file name : \n")
-			os.system("cd platform-tools & adb.exe push ../%s sdcard/Download/" % file)
-			print("File %s copied succesfully to /Download" % file)
+		case "9":
+			os.system("cd platform-tools & adb.exe shell thermal-engine -o > ../thermal-engine.conf")
+			print("\nDumped Device Thermal configuration to /PyDroidTools")
+			time.sleep(3)
+
+		case "10":
+			allowed = []
+			print("This will allow you to backup selected files from your Android Device to a compressed .zip file\n")
+			dcim = input("Include /DCIM folder ?\nThis folder includes Camera photos\n (Y/N)")
+			if  dcim.upper() == "Y":
+				allowed.append("DCIM")
+
+			pictures = input("Include /Pictures folder ?\nThis folder includes photos from Social Apps like Twitter, WhatsApp,...\n (Y/N)")
+			if  pictures.upper() == "Y":
+				allowed.append("Pictures")
+
+			downloads = input("Include /Download folder ?\nThis folder includes all your browser downloads\n (Y/N)")
+			if  downloads.upper() == "Y":
+				allowed.append("Download")
+
+			music = input("Include /Music folder ?\nThis folder includes .mp3 files\n (Y/N)")
+			if  music.upper() == "Y":
+				allowed.append("Music")
+
+			documents = input("Include /Documents folder ?\nThis folder includes all your documents\n (Y/N)")
+			if  documents.upper() == "Y":
+				allowed.append("Documents")
+
+			os.system("mkdir backup")
+
+			for dirs in allowed:
+				os.system("cd platform-tools & adb.exe pull sdcard/%s ../backup " % dirs )
+
+			print("\nDone downloading the files from your devices... \nCreating a zip file...")
+
+			zipdir = zip_dir("backup")
+
+			print("\nErasing temp files...")
+			os.system("rmdir /S /Q backup")
+
+			print("\nBackup completed succesfully!")
 			time.sleep(2)
 
-		else:
-			file = input("Enter the full file location : \n")
-			os.system("cd platform-tools & adb.exe push %s sdcard/Download/" % file)
-			print("File %s copied succesfully to /Download" % file)
-			time.sleep(2)
+		case "11":
+			my_device_model_img = check_device() + ".img"
+			my_device_model_img = my_device_model_img.replace("\n.img", ".img")
+			ask = input("Choose device partitions type: \n[1] A-only partition (2011-2017 devices\n[2] A|B Partitions (2017-2022 devices)\n[3] Check for all partitions (unknown partitions)\n")
+			if ask == "1" :
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
+
+			elif ask == "2" :
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
+
+			else :
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
+				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
+
+
+		case "12":
+			file = input("\n[1] Same Directory \n[2] Paste location \n")
+			if file == "1":
+				file = input("Enter the full file name : \n")
+				os.system("cd platform-tools & adb.exe push ../%s sdcard/Download/" % file)
+				print("File %s copied succesfully to /Download" % file)
+				time.sleep(2)
+
+			else:
+				file = input("Enter the full file location : \n")
+				os.system("cd platform-tools & adb.exe push %s sdcard/Download/" % file)
+				print("File %s copied succesfully to /Download" % file)
+				time.sleep(2)
 
 # ================== End of Main =======================
 
