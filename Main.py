@@ -90,6 +90,7 @@ pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
 # Packages names
 windows = "platform-tools-latest-windows.zip"
 gsi_image = "system.img"
+ota_package = "android_ota.zip"
 
 user = 0 # For keyboard input 
 
@@ -105,7 +106,7 @@ while user != "":
  ----------------------------------------------
 | █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
 | █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
+|----------------------------------------------|\n|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n|----------------------------------------------|    \n| Version 1.0                       ©daviiid99 |\n ----------------------------------------------    \n""" % my_device_model)
 
 	else:
 		user = input(
@@ -113,7 +114,7 @@ while user != "":
  ----------------------------------------------
 | █▀█ █▄█ █▀▄ █▀█ █▀█ █ █▀▄ ▀█▀ █▀█ █▀█ █░░ █▀ |
 | █▀▀ ░█░ █▄▀ █▀▄ █▄█ █ █▄▀ ░█░ █▄█ █▄█ █▄▄ ▄█ |
-|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
+|----------------------------------------------|\n|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[0] Upgrade PyDroidTools                      |\n|[1] Download Platform-Tools                   |\n|[2] Check for ADB Devices                     |\n|[3] Check for Fastboot Devices                |\n|[4] Get Android Device Logcat                 |\n|[5] Flash a Generic System Image              |\n|[6] Unlock Android Bootloader                 |\n|[7] Remove Android App (Bloatware)            |\n|[8] Install Android App                       |\n|[9] Dump Thermal config file                  |\n|[10] Android Device Backup                    |\n|[11] Backup current Android boot.img          |\n|[12] Send file over ADB                       |\n|[13] Sideload OTA file                        |\n|----------------------------------------------|\n|Press enter to exit...                        |\n ----------------------------------------------    \n""" % my_device_model)
 	match user:
 
 		case "0":
@@ -291,6 +292,29 @@ while user != "":
 				os.system("cd platform-tools & adb.exe push %s sdcard/Download/" % file)
 				print("File %s copied succesfully to /Download" % file)
 				time.sleep(2)
+
+		case "13" :
+			file = input("\n[1] Same Directory \n[2] Paste location \n[3] Paste URL\n")
+			match file :
+				case "1":
+					file = input("Enter the file name (without .zip extension) : \n")
+					os.system("cd platform-tools & adb.exe sideload ../%s.zip" % file)
+					print("\nOTA update pushed succesfully")
+					time.sleep(2)
+
+				case "2" :
+					file = input("Enter the full file path : \n")
+					os.system("cd platform-tools & adb.exe sideload %s" % file)
+					print("\nOTA update pushed succesfully")
+					time.sleep(2)
+
+				case "3" :
+					file = input("Enter the file URL : \n")
+					print("Downloading the zip file as %s" % ota_package)
+					download = wget.download(file,ota_package)
+					os.system("cd platform-tools & adb.exe sideload ../%s" % ota_package)
+					print("\nOTA update pushed succesfully")
+					time.sleep(2)
 
 # ================== End of Main =======================
 
