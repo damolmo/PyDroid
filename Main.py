@@ -1,6 +1,6 @@
 """
-PyDroidTools
-Experiments with Python and ADB/fastboot tools
+PyDroid
+Python program powered by Android Platform-Tools
 
 """
 import os
@@ -87,7 +87,7 @@ def check_device():
 # =================== Beginning of variables=============
 # Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
-pydroidtools = "https://github.com/daviiid99/PyDroidTools/raw/main/Main.py"
+pydroidtools = "https://github.com/daviiid99/PyDroid/raw/main/Main.py"
 
 # Packages names
 windows = "platform-tools-latest-windows.zip"
@@ -123,35 +123,35 @@ while user != "":
 	match user:
 
 		case "0":
-			variant = input("How to update PyDroidTools : \n[1] Update python script \n[2] Update Python Script & Generate .exe\n")
+			variant = input("How to update PyDroid : \n[1] Update Python Script \n[2] Update Python Script & Generate .exe\n")
 			match variant :
 
 				case "1":
-					print("\nErasing previous version of PyDroidTools...")
+					print("\nErasing previous version of PyDroid...")
 					os.system("del /f Main.py ")
 
-					print("\nDownloading latest PyDroidTools, please wait...")
+					print("\nDownloading latest PyDroid, please wait...")
 					release = wget.download(pydroidtools, "Main.py")
 
-					print("\nExiting from previous PyDroidTools version and launching new version...")
+					print("\nExiting from previous PyDroid version and launching new version...")
 					user = ""
 					os.system("python Main.py")
 
 				case "2" :
 
-					print("\nErasing previous version of PyDroidTools...")
+					print("\nErasing previous version of PyDroid...")
 					os.system("del /f Main.py ")
 
-					print("\nDownloading latest PyDroidTools, please wait...")
+					print("\nDownloading latest PyDroid, please wait...")
 					release = wget.download(pydroidtools, "Main.py")
 
 					# We're going to build an executable from the new python script
 					os.system("pyinstaller --onefile Main.py")
 
-					print("\nExiting from previous PyDroidTools version and launching new version...")
+					print("\nExiting from previous PyDroid version and launching new version...")
 
 					# Performing a cleanup 
-					os.system("cd dist & move Main.exe ../PyDroidTools.exe")
+					os.system("cd dist & move Main.exe ../PyDroid.exe")
 					os.system("rmdir /S /Q build")
 					os.system("rmdir /S /Q dist")
 					os.system("del /f Main.spec ")
@@ -160,7 +160,7 @@ while user != "":
 					user = ""
 
 					# Launch of the new version as executable
-					os.system("start PyDroidTools.exe")
+					os.system("start PyDroid.exe")
 
 
 		case "1":
