@@ -12,7 +12,7 @@
 <img src = "src/screenshot.png">
 
 # System Requirements
-• Recent <a href="https://www.python.org/downloads/release/python-3104/">Python 3 version</a><br/>
+• Recent <a href="https://www.python.org/downloads/release/python-3104/">Python 3.10 version or newer</a><br/>
 • <a href="https://github.com/git-for-windows/git/releases/latest">Git for Windows</a>
 
 # Installation
