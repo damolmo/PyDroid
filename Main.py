@@ -9,6 +9,7 @@ import os
 print("-----------------------------\nInstalling core components...\nPlease wait\n-----------------------------")
 os.system("pip install wheel")
 os.system("pip install wget")
+os.system("pip install pyinstaller")
 # =================== End of dependencies ===========================================
 
 
@@ -26,16 +27,15 @@ import tarfile
 from pathlib import Path
 import zipfile
 from datetime import datetime
-DATE_FORMAT = '%y%m%d'
 import subprocess
 import subprocess
+from zipfile import ZipFile
 # ==================== End of imports ================================
 
 
 # ============================ Beginning of Functions ====================
 
 def date_str():
-    """returns the today string year, month, day"""
     return '{}'.format(datetime.now().strftime(DATE_FORMAT))
 
 def zip_name(path):
@@ -92,6 +92,8 @@ windows = "platform-tools-latest-windows.zip"
 gsi_image = "system.img"
 ota_package = "android_ota.zip"
 
+# Other variables
+DATE_FORMAT = '%y%m%d'
 user = 0 # For keyboard input 
 
 # ==================== End of variables ===================
@@ -118,15 +120,44 @@ while user != "":
 	match user:
 
 		case "0":
-			print("\nErasing previous version of PyDroidTools...")
-			os.system("del /f Main.py ")
+			variant = input("How to update PyDroidTools : \n[1] Update python script \n[2] Update Python Script & Generate .exe\n")
+			match variant :
 
-			print("\nDownloading latest PyDroidTools, please wait...")
-			release = wget.download(pydroidtools, "Main.py")
+				case "1":
+					print("\nErasing previous version of PyDroidTools...")
+					os.system("del /f Main.py ")
 
-			print("\nExiting from previous PyDroidTools version and launching new version...")
-			user = ""
-			os.system("python Main.py")
+					print("\nDownloading latest PyDroidTools, please wait...")
+					release = wget.download(pydroidtools, "Main.py")
+
+					print("\nExiting from previous PyDroidTools version and launching new version...")
+					user = ""
+					os.system("python Main.py")
+
+				case "2" :
+
+					print("\nErasing previous version of PyDroidTools...")
+					os.system("del /f Main.py ")
+
+					print("\nDownloading latest PyDroidTools, please wait...")
+					release = wget.download(pydroidtools, "Main.py")
+
+					# We're going to build an executable from the new python script
+					os.system("pyinstaller --onefile Main.py")
+
+					print("\nExiting from previous PyDroidTools version and launching new version...")
+
+					# Performing a cleanup 
+					os.system("cd dist & move Main.exe ../PyDroidTools.exe")
+					os.system("rmdir /S /Q build")
+					os.system("rmdir /S /Q dist")
+					os.system("del /f Main.spec ")
+					os.system("del /f Main.py ")
+
+					user = ""
+
+					# Launch of the new version as executable
+					os.system("start PyDroidTools.exe")
 
 
 		case "1":
@@ -137,7 +168,6 @@ while user != "":
 			windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
 
 			print("\nExtracting the downloaded %s file..." % windows)
-			from zipfile import ZipFile
 			with ZipFile('platform-tools-latest-windows.zip') as zipObj:
 				zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
 
