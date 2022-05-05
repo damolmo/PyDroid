@@ -151,6 +151,7 @@ while user != "":
 					print("\nExiting from previous PyDroid version and launching new version...")
 
 					# Performing a cleanup 
+					os.system("del /f PyDroid.exe ")
 					os.system("cd dist & move Main.exe ../PyDroid.exe")
 					os.system("rmdir /S /Q build")
 					os.system("rmdir /S /Q dist")
