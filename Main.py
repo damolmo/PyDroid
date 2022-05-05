@@ -159,6 +159,7 @@ while user != "":
 					user = ""
 
 					# Launch of the new version as executable
+					os.system("rmdir /S /Q dist")
 					os.system("start PyDroid.exe")
 
 
