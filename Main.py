@@ -111,6 +111,12 @@ header ="""
 
 # ==================== End of variables ===================
 
+# =================== Beginning of Post-update process ============
+os.system("cd latest & move PyDroid.exe ../PyDroid-latest.exe")
+os.system("start PyDroid.exe")
+# ==================== End of Post-update process ==============================
+
+
 
 # ================= Beginning of Main ======================
 while user != "":
@@ -151,8 +157,7 @@ while user != "":
 					print("\nExiting from previous PyDroid version and launching new version...")
 
 					# Performing a cleanup 
-					os.system("del /f PyDroid.exe ")
-					os.system("cd dist & move Main.exe ../PyDroid.exe")
+					os.system("cd dist & move Main.exe ../latest/PyDroid.exe" )
 					os.system("rmdir /S /Q build")
 					os.system("del /f Main.spec ")
 					os.system("del /f Main.py ")
@@ -160,8 +165,9 @@ while user != "":
 					user = ""
 
 					# Launch of the new version as executable
+					os.system("del /f PyDroid.exe ")
 					os.system("rmdir /S /Q dist")
-					os.system("start PyDroid.exe")
+					os.system("start latest/PyDroid.exe")
 
 
 		case "1":
