@@ -299,17 +299,18 @@ while user != "":
 			my_device_model_img = check_device() + ".img"
 			my_device_model_img = my_device_model_img.replace("\n.img", ".img")
 			ask = input("Choose device partitions type: \n[1] A-only partition (2011-2017 devices\n[2] A|B Partitions (2017-2022 devices)\n[3] Check for all partitions (unknown partitions)\n")
-			if ask == "1" :
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
+			match ask:
+				case "1" :
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
 
-			elif ask == "2" :
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
+				case "2" :
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
 
-			else :
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
-				os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
+				case "3" :
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot ../boot_%s" % my_device_model_img)
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_a ../boot_a_%s" % my_device_model_img)
+					os.system("cd platform-tools & adb.exe root & adb.exe pull dev/block/bootdevice/by-name/boot_b ../boot_b_%s" % my_device_model_img)
 
 
 		case "12":
