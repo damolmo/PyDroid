@@ -112,7 +112,7 @@ header ="""
 # ==================== End of variables ===================
 
 # =================== Beginning of Post-update process ============
-os.system("cd latest & move PyDroid.exe ../PyDroid-latest.exe")
+os.system("cd latest & move PyDroid.exe ../PyDroid.exe")
 os.system("start PyDroid.exe")
 # ==================== End of Post-update process ==============================
 
