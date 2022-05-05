@@ -148,7 +148,7 @@ while user != "":
 					os.system("pyinstaller --onefile Main.py")
 
 					print("\nExiting from previous PyDroid version and launching new version...")
-					os.system("cd dist & move PyDroid.exe ../PyDroid.exe")
+					os.system("cd dist & move Main.exe ../PyDroid.exe")
 					time.sleep(2)
 
 					# Performing a cleanup 
