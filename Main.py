@@ -152,15 +152,16 @@ while user != "":
 
 					# Performing a cleanup 
 					os.system("del /f PyDroid.exe ")
-					os.system("cd dist & move Main.exe ../PyDroid.exe")
+					os.system("cd dist & move Main.exe ../latest.exe")
 					os.system("rmdir /S /Q build")
-					os.system("rmdir /S /Q dist")
 					os.system("del /f Main.spec ")
 					os.system("del /f Main.py ")
 
 					user = ""
 
 					# Launch of the new version as executable
+					os.system("rmdir /S /Q dist")
+					os.system("move latest.exe PyDroid.exe")
 					os.system("start PyDroid.exe")
 
 
