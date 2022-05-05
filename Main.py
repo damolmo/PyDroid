@@ -148,11 +148,10 @@ while user != "":
 					os.system("pyinstaller --onefile Main.py")
 
 					print("\nExiting from previous PyDroid version and launching new version...")
+					os.system("cd dist & move PyDroid.exe ../PyDroid.exe")
+					time.sleep(2)
 
 					# Performing a cleanup 
-					os.system("mkdir latest")
-					os.system("cd dist & move Main.exe ../latest/PyDroid.exe" )
-					os.system("del /f PyDroid.exe ")
 					os.system("rmdir /S /Q build")
 					os.system("del /f Main.spec ")
 					os.system("del /f Main.py ")
@@ -160,9 +159,7 @@ while user != "":
 					user = ""
 
 					# Launch of the new version as executable
-					os.system("rmdir /S /Q dist")
-					os.system("cd latest & move PyDroid.exe ../PyDroid.exe")	
-					os.system("rmdir /S /Q latest")
+					os.system("rmdir /S /Q dist")	
 					os.system("start PyDroid.exe")
 
 
