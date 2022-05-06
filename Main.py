@@ -118,9 +118,14 @@ while user != "":
 	match user :
 
 		case "P" | "p" :
-				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Download Platform-Tools                   |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-4                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+			if my_device_model == "No ADB device found" :
+				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Download Platform-Tools                   |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
-				match user :
+			else :
+				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Download Platform-Tools                   |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+
+			
+			match user :
 
 					case "1":
 						variant = input("How to update PyDroid : \n[1] Update Python Script \n[2] Update Python Script & Generate .exe\n")
@@ -258,8 +263,14 @@ while user != "":
 						print("\nDumped Device Thermal configuration to /PyDroidTools")
 						time.sleep(3)
 
+
 					case "N" | "n" :
-						user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|----------------------------------------------|\n| <- <P> Previous Page        <ENTER> Exit     |\n|----------------------------------------------|    \n| Version 1.0-4                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+
+						if my_device_model == "No ADB device found" :
+							user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+
+						else: 
+							user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 						match user :
 							case "11":
@@ -354,6 +365,21 @@ while user != "":
 										os.system("cd platform-tools & adb.exe sideload ../%s" % ota_package)
 										print("\nOTA update pushed succesfully")
 										time.sleep(2)
+
+							case "15" :
+								option = input("\nAndroid Device Screen DPI Control\n[1] Check current DPI\n[2] Modify Screen DPI")
+
+								if option == "1":
+									os.system("cd platform-tools & adb.exe shell wm density")
+									time.sleep(5)
+
+								else :
+									dpi = int(input("\nEnter a new Display Density: \n"))
+									os.system("cd platform-tools & adb.exe shell wm density %d" % dpi)
+									time.sleep(3)
+									
+
+
 
 
 		
