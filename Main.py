@@ -32,6 +32,7 @@ import subprocess
 import subprocess
 from zipfile import ZipFile
 import pyfiglet
+from os.path import exists
 # ==================== End of imports ================================
 
 
@@ -82,6 +83,25 @@ def check_device():
 
 	return my_device_model
 
+def install_tools(adb_windows, windows) :
+	windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
+	with ZipFile('platform-tools-latest-windows.zip') as zipObj:
+		zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
+	os.system("del /f platform-tools-latest-windows.zip ")
+
+
+def android_tools_exists(adb_windows, windows) :
+	exists = False
+	if os.path.exists("platform-tools") :
+		exists = True
+
+	else :
+		install_tools(adb_windows, windows)
+
+	return exists
+
+
+
 # ======================== End of Functions ================================
 
 # =================== Beginning of variables=============
@@ -112,6 +132,7 @@ header ="""
 # ==================== End of variables ===================
 
 # ================= Beginning of Main ======================
+android_tools_exists(adb_windows, windows)
 while user != "":
 	my_device_model = check_device()
 	user = "P"
@@ -119,10 +140,10 @@ while user != "":
 
 		case "P" | "p" :
 			if my_device_model == "No ADB device found" :
-				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Download Platform-Tools                   |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			else :
-				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Download Platform-Tools                   |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			
 			match user :
@@ -170,19 +191,22 @@ while user != "":
 
 
 					case "2":
-						print("\nErasing previous files...")
-						os.system("rmdir /S /Q platform-tools")
+						if android_tools_exists(adb_windows, windows) == True :
+							print("\nAndroid Platform-Tools are already installed on your device\nHave a good day!")
+							ask = input("\nReinstall ? (Y|N)\n")
 
-						print("\nDownloading %s from Google server, please wait..." % windows)
-						windows = wget.download(adb_windows,windows) #Download the platform-tools-latest-windows.zip from Google server
 
-						print("\nExtracting the downloaded %s file..." % windows)
-						with ZipFile('platform-tools-latest-windows.zip') as zipObj:
-							zipObj.extractall() #Extracts the downloaded file into a subdir called /platform-tools
+							if ask.upper() == "Y" :
+								os.system("rmdir /S /Q platform-tools")
+								print("\nDownloading %s from Google server, please wait..." % windows)
+								android_tools_exists(adb_windows, windows)
 
-						print("\nErasing temp files...")
-						os.system("del /f platform-tools-latest-windows.zip ")
+							else:
+								print("\nOperation cancelled by the user")
+								time.sleep(2)
 
+						else : 
+							print("\nDownloading %s from Google server, please wait..." % windows)
 
 					case "3":
 						print("\n---------------- ADB Devices Found ---------------\nIf your device is not listed, check your USB cable")
@@ -209,22 +233,30 @@ while user != "":
 							gsi = input("\nEnter the filename of your GSI (without the .img extension) : \n")
 							gsi = gsi + ".img"
 
-						else:
+						elif resource == "2":
 							url = input("\nEnter your GSI URL (Recommended GitHub:\n")
 							gsi = wget.download(url,gsi_image) # Download the GSI
 							gsi = gsi_image
 
-						user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[3] Slot system_b\n")
+						else :
+							print("\nOperation cancelled by the user")
+							time.sleep(2)
+
+						user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[2] Slot system_b\n")
 
 						if user == "1" :
 							os.system("cd platform-tools & fastboot.exe devices")
 							print("\nFlashing the Generic System Image...")
 							os.system("cd platform-tools & fastboot.exe flash system_a %s" % gsi)
 
-						else :
+						elif user == "2" :
 							os.system("cd platform-tools & fastboot.exe devices")
 							print("\nFlashing the Generic System Image...")
 							os.system("cd platform-tools & fastboot.exe flash system_b %s" % gsi)
+
+						else :
+							print("\nOperation cancelled by the user")
+							time.sleep(2)
 
 						print("\nErasing temp files...")
 						os.system("del /f system.img")
@@ -243,9 +275,13 @@ while user != "":
 							app = input("Enter App package name:\n")
 							os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
 
-						else :
+						elif ask == "2" :
 							app = input("Enter App package name:\n")
 							os.system("cd platform-tools & adb.exe uninstall --user 0 %s " % app)
+
+						else :
+							print("\nOperation cancelled by the user")
+							time.sleep(2)
 
 					case "9":
 						print("Place the .APK files into your /PyDroidTools dir and wait ...")
@@ -337,10 +373,14 @@ while user != "":
 									print("File %s copied succesfully to /Download" % file)
 									time.sleep(2)
 
-								else:
+								elif file == "2":
 									file = input("Enter the full file location : \n")
 									os.system("cd platform-tools & adb.exe push %s sdcard/Download/" % file)
 									print("File %s copied succesfully to /Download" % file)
+									time.sleep(2)
+
+								else :
+									print("\nOperation cancelled by the user")
 									time.sleep(2)
 
 							case "14" :
@@ -373,10 +413,14 @@ while user != "":
 									os.system("cd platform-tools & adb.exe shell wm density")
 									time.sleep(5)
 
-								else :
+								elif option == "2" :
 									dpi = int(input("\nEnter a new Display Density: \n"))
 									os.system("cd platform-tools & adb.exe shell wm density %d" % dpi)
 									time.sleep(3)
+
+								else :
+									print("\nOperation cancelled by the user")
+									time.sleep(2)
 									
 
 
