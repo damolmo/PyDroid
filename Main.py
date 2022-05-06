@@ -367,7 +367,7 @@ while user != "":
 										time.sleep(2)
 
 							case "15" :
-								option = input("\nAndroid Device Screen DPI Control\n[1] Check current DPI\n[2] Modify Screen DPI")
+								option = input("\nAndroid Device Screen DPI Control\n[1] Check current DPI\n[2] Modify Screen DPI\n")
 
 								if option == "1":
 									os.system("cd platform-tools & adb.exe shell wm density")
