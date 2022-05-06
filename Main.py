@@ -172,7 +172,7 @@ while user != "":
 								release = wget.download(pydroidtools, "Main.py")
 
 								# We're going to build an executable from the new python script
-								os.system("pyinstaller --onefile Main.py")
+								os.system("pyinstaller --icon=src/android.ico --onefile Main.py")
 
 								print("\nExiting from previous PyDroid version and launching new version...")
 								os.system("cd dist & move Main.exe ../PyDroid.exe")
