@@ -149,10 +149,10 @@ while user != "":
 
 		case "P" | "p" :
 			if my_device_model == "No ADB device found" :
-				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			else :
-				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			
 			match user :
@@ -323,14 +323,29 @@ while user != "":
 						print("\nDumped Device Thermal configuration to /PyDroidTools")
 						time.sleep(3)
 
+					case "R" | "r" :
+						os.system("cd platform-tools & adb.exe reboot recovery")
+
+					case "F" | "f" :
+						os.system("cd platform-tools & adb.exe reboot bootloader")
+
+					case "T" | "t" :
+						os.system("cd platform-tools & adb.exe reboot system")
+
+					case "K" | "k" :
+						os.system("cd platform-tools & adb.exe shell reboot -p")
+
+					case "L" | "l" :
+						my_device_model
+
 
 					case "N" | "n" :
 
 						if my_device_model == "No ADB device found" :
-							user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+							user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 						else: 
-							user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+							user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 						match user :
 							case "11":
@@ -450,16 +465,21 @@ while user != "":
 								print("\nInstalling Google USB Driver for Windows 10/11... \n")
 								install_google_usb(google_usb, usb);
 
+							case "R" | "r" :
+								os.system("cd platform-tools & adb.exe reboot recovery")
+
+							case "F" | "f" :
+								os.system("cd platform-tools & adb.exe reboot bootloader")
+
+							case "T" | "t" :
+								os.system("cd platform-tools & adb.exe reboot system")
+
+							case "K" | "k" :
+								os.system("cd platform-tools & adb.exe shell reboot -p")
+
+							case "L" | "l" :
+								my_device_model
 									
-
-
-
-
-		
-
-
-			
-
 		
 # ================== End of Main =======================
 
