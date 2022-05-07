@@ -33,6 +33,7 @@ import subprocess
 from zipfile import ZipFile
 import pyfiglet
 from os.path import exists
+
 # ==================== End of imports ================================
 
 
@@ -100,7 +101,12 @@ def android_tools_exists(adb_windows, windows) :
 
 	return exists
 
-
+def install_google_usb(google_usb, usb) :
+	usb = wget.download(google_usb,usb)
+	with ZipFile(usb) as zipObj:
+		zipObj.extractall()
+	os.system("del /f Google_USB.zip ")
+	os.system("pnputil.exe -a usb_driver\android_winusb.inf")
 
 # ======================== End of Functions ================================
 
@@ -108,9 +114,12 @@ def android_tools_exists(adb_windows, windows) :
 # Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
 pydroidtools = "https://github.com/daviiid99/PyDroid/raw/main/Main.py"
+google_usb = "https://github.com/daviiid99/PyDroid/raw/main/Google_USB.zip"
 
 # Packages names
+usb = "Google_USB.zip"
 windows = "platform-tools-latest-windows.zip"
+gsi_image_xz = "system.img.xz"
 gsi_image = "system.img"
 ota_package = "android_ota.zip"
 
@@ -140,10 +149,10 @@ while user != "":
 
 		case "P" | "p" :
 			if my_device_model == "No ADB device found" :
-				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			else :
-				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			
 			match user :
@@ -234,9 +243,21 @@ while user != "":
 							gsi = gsi + ".img"
 
 						elif resource == "2":
-							url = input("\nEnter your GSI URL (Recommended GitHub:\n")
-							gsi = wget.download(url,gsi_image) # Download the GSI
-							gsi = gsi_image
+							ask = input("\nChoose the extension of your GSI file : \n[1] .IMG \n[2] .XZ\n")
+
+							if ask == "1" :
+								url = input("\nEnter your GSI URL (Recommended GitHub:\n")
+								gsi = wget.download(url,gsi_image) # Download the GSI
+								gsi = gsi_image
+
+							elif ask == "2" :
+								url = input("\nEnter your GSI URL (Recommended GitHub:\n")
+								gsi = wget.download(url,gsi_image_xz) # Download the GSI
+								print("\nExtracting the %s file, please wait..." % gsi_image_xz)
+								with lzma.open(gsi_image_xz) as gsi, open(gsi_image, 'wb') as extract:
+									gsi = gsi.read()
+									extract.write(gsi)
+									gsi = gsi_image
 
 						else :
 							print("\nOperation cancelled by the user")
@@ -248,18 +269,21 @@ while user != "":
 							os.system("cd platform-tools & fastboot.exe devices")
 							print("\nFlashing the Generic System Image...")
 							os.system("cd platform-tools & fastboot.exe flash system_a %s" % gsi)
+							print("\nErasing temp files...")
+							os.system("del /f system.img")
 
 						elif user == "2" :
 							os.system("cd platform-tools & fastboot.exe devices")
 							print("\nFlashing the Generic System Image...")
 							os.system("cd platform-tools & fastboot.exe flash system_b %s" % gsi)
+							print("\nErasing temp files...")
+							os.system("del /f system.img")
 
 						else :
 							print("\nOperation cancelled by the user")
 							time.sleep(2)
 
-						print("\nErasing temp files...")
-						os.system("del /f system.img")
+	
 
 					case "7":
 						print("\nWARNING!!\nBootloader Unlock will ONLY work with Google Pixel and Android One Devices\nIf you're using an unlockable device, enable\nSettings > System > Developer Options > OEM unlock > Enable\nAnd plug-in your Android device")
@@ -303,10 +327,10 @@ while user != "":
 					case "N" | "n" :
 
 						if my_device_model == "No ADB device found" :
-							user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+							user = input("""%s|Current Device : %s          |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 						else: 
-							user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-5                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+							user = input("""%s|Current Device : %s|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|[16] Google USB Driver for Windows            |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 						match user :
 							case "11":
@@ -421,6 +445,11 @@ while user != "":
 								else :
 									print("\nOperation cancelled by the user")
 									time.sleep(2)
+
+							case "16" :
+								print("\nInstalling Google USB Driver for Windows 10/11... \n")
+								install_google_usb(google_usb, usb);
+
 									
 
 
