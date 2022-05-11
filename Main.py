@@ -9,8 +9,6 @@ import os
 print("-----------------------------\nInstalling core components...\nPlease wait\n-----------------------------")
 os.system("pip3 install wheel")
 os.system("pip3 install wget")
-os.system("pip3 install pyinstaller")
-os.system("pip3 install pyfiglet==0.7")
 # =================== End of dependencies ===========================================
 
 
@@ -27,7 +25,6 @@ from datetime import datetime
 import subprocess
 import subprocess
 from zipfile import ZipFile
-import pyfiglet
 from os.path import exists
 
 # ==================== End of imports ================================
