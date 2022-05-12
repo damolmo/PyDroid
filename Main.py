@@ -113,7 +113,7 @@ def install_google_usb(google_usb, usb) :
 # =================== Beginning of variables=============
 # Static URLs
 adb_windows ="https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
-pydroidtools = "https://github.com/daviiid99/PyDroid/raw/main/Main.py"
+pydroidtools = "https://github.com/daviiid99/PyDroid/raw/Windows/Main.py"
 google_usb = "https://github.com/daviiid99/PyDroid/raw/main/Google_USB.zip"
 
 # Packages names
