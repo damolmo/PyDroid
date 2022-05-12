@@ -204,7 +204,7 @@ while user != "":
 					logcat = "logcat" + "-" + my_device_model + ".txt"
 					logcat = logcat.replace("\n.txt", ".txt")
 					print("\nPlug your device to your PC USB port and wait\nA logcat file will be generated into your /PyDroidTools folder")
-					os.system("cd platform-tools & adb logcat -d -b main -b system -b events -v time > ../%s" % logcat)
+					os.system("cd platform-tools & adb logcat -d -b main -b system -b events -v time > %s" % logcat)
 
 				case "6":
 					resource = input("\nChoose an option to get the GSI file: \n[1] Local\n[2] URL\n")
@@ -284,11 +284,11 @@ while user != "":
 					print("Place the .APK files into your /PyDroidTools dir and wait ...")
 					time.sleep(3)
 					user = input("\nEnter app name (without the .apk extension): \n")
-					os.system("cd platform-tools & adb install -r ../%s.apk " % user)
+					os.system("cd platform-tools & adb install -r %s.apk " % user)
 
 					ask = input("Remove the installed file?:\n (Y/N)")
 					if ask.upper() == "Y":
-						os.system("del /f %s.apk" % user)
+						os.system("rm %s.apk" % user)
 
 
 				case "10":
