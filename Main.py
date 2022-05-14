@@ -146,18 +146,22 @@ while user != "":
 	match user :
 
 		case "P" | "p" :
-			if my_adb_model == "No ADB device found" or my_fastboot_model == "No ADB device found" :
+			if my_adb_model == "No ADB device found" and my_fastboot_model == "No ADB device found" :
 				my_device_model = my_adb_model
 				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 			
-			elif my_adb_model != "No ADB device found" : 
+			elif my_adb_model != "No ADB device found" and my_adb_model !="" : 
 					my_device_model = my_adb_model
 					user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
-				
-			elif my_fastboot_model != "No ADB device found"  :
+					
+
+			elif my_fastboot_model != "No ADB device found" and my_fastboot_model !="" :
 					my_device_model = my_fastboot_model
 					user = input("""%s|Current Device : %s|<S> Recovery <U> Fastboot <V> Reboot <W> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
 				
+			else :
+				my_device_model = my_adb_model
+				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			match user :
 				case "1":
@@ -244,6 +248,7 @@ while user != "":
 						os.system("cd platform-tools & fastboot flash system_a %s" % gsi)
 						print("\nErasing temp files...")
 						os.system("rm system.img")
+						os.system("rm system.img.xz")
 
 					elif user == "2" :
 						os.system("cd platform-tools & fastboot devices")
@@ -251,6 +256,7 @@ while user != "":
 						os.system("cd platform-tools & fastboot flash system_b %s" % gsi)
 						print("\nErasing temp files...")
 						os.system("rm system.img")
+						os.system("rm system.img.xz")
 
 					else :
 						print("\nOperation cancelled by the user")
@@ -315,7 +321,7 @@ while user != "":
 					os.system("cd platform-tools & fastboot reboot bootloader")
 
 				case "V" | "v" :
-					os.system("cd platform-tools & fastboot reboot system")
+					os.system("cd platform-tools & fastboot reboot")
 
 				case "W" | "w" :
 					os.system("cd platform-tools & fastboot reboot -p")
