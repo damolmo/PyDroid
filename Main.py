@@ -240,7 +240,7 @@ while user != "":
 						print("\nOperation cancelled by the user")
 						time.sleep(2)
 
-					user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[2] Slot system_b\n")
+					user = input("\nSelect the slot to flash the Generic System Image : \n[1] Slot system_a\n[2] Slot system_b\n[3] Slots system_a & system_b")
 
 					if user == "1" :
 						os.system("cd platform-tools & fastboot devices")
@@ -257,6 +257,16 @@ while user != "":
 						print("\nErasing temp files...")
 						os.system("rm system.img")
 						os.system("rm system.img.xz")
+
+					elif user == "3" :
+						os.system("cd platform-tools & fastboot devices")
+						print("\nFlashing the Generic System Image...")
+						os.system("cd platform-tools & fastboot flash system_a %s" % gsi)
+						os.system("cd platform-tools & fastboot flash system_b %s" % gsi)
+						print("\nErasing temp files...")
+						os.system("rm system.img")
+						os.system("rm system.img.xz")
+
 
 					else :
 						print("\nOperation cancelled by the user")
@@ -451,25 +461,6 @@ while user != "":
 							else :
 								print("\nOperation cancelled by the user")
 								time.sleep(2)
-
-						case "16" :
-							print("\nInstalling Google USB Driver for linux 10/11... \n")
-							install_google_usb(google_usb, usb);
-
-						case "R" | "r" :
-							os.system("cd platform-tools & adb reboot recovery")
-
-						case "F" | "f" :
-							os.system("cd platform-tools & adb reboot bootloader")
-
-						case "T" | "t" :
-							os.system("cd platform-tools & adb reboot system")
-
-						case "K" | "k" :
-							os.system("cd platform-tools & adb shell reboot -p")
-
-						case "L" | "l" :
-							my_device_model
 									
 		
 # ================== End of Main =======================
