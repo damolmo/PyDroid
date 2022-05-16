@@ -26,7 +26,7 @@ import subprocess
 import subprocess
 from zipfile import ZipFile
 from os.path import exists
-
+from pathlib import Path
 # ==================== End of imports ================================
 
 
@@ -106,6 +106,34 @@ def android_tools_exists(adb_linux, linux) :
 
 	return exists
 
+def check_for_updates(version) :
+	message = False
+
+	# Read the version string from an external text document
+	os.system("rm -f version.txt")
+	os.system("wget https://raw.githubusercontent.com/daviiid99/PyDroid/Linux/src/version.txt")
+	version_str = Path('version.txt').read_text()
+	version_str = version_str.replace('\n', '')
+	os.system("rm -f version.txt")
+
+	# Check if the latest version is installed
+	if version_str != version :
+		message = True
+
+	return message
+
+def latest_version(version) :
+	# Read the version string from an external text document
+	os.system("rm -f version.txt")
+	os.system("wget https://raw.githubusercontent.com/daviiid99/PyDroid/Linux/src/version.txt")
+	version_str = Path('version.txt').read_text()
+	version_str = version_str.replace('\n', '')
+	os.system("rm -f version.txt")
+
+	return version_str
+
+
+
 # ======================== End of Functions ================================
 
 # =================== Beginning of variables=============
@@ -123,6 +151,7 @@ ota_package = "android_ota.zip"
 # Other variables
 DATE_FORMAT = '%y%m%d'
 user = 0 # For keyboard input 
+version = "1.0-7"
 header ="""
  ----------------------------------------------
 |     ____        ____            _     _      |
@@ -148,32 +177,44 @@ while user != "":
 		case "P" | "p" :
 			if my_adb_model == "No ADB device found" and my_fastboot_model == "No ADB device found" :
 				my_device_model = my_adb_model
-				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Check for PyDroid updates                 |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 			
 			elif my_adb_model != "No ADB device found" and my_adb_model !="" : 
 					my_device_model = my_adb_model
-					user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
+					user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Check for PyDroid updates                 |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
 					
 
 			elif my_fastboot_model != "No ADB device found" and my_fastboot_model !="" :
 					my_device_model = my_fastboot_model
-					user = input("""%s|Current Device : %s|<S> Recovery <U> Fastboot <V> Reboot <W> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
+					user = input("""%s|Current Device : %s|<S> Recovery <U> Fastboot <V> Reboot <W> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Check for PyDroid updates                 |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))	
 				
 			else :
 				my_device_model = my_adb_model
-				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Upgrade PyDroidTools                      |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+				user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[1] Check for PyDroid updates                 |\n|[2] Reinstall Platform-Tools                  |\n|[3] Check for ADB Devices                     |\n|[4] Check for Fastboot Devices                |\n|[5] Get Android Device Logcat                 |\n|[6] Flash a Generic System Image              |\n|[7] Unlock Android Bootloader                 |\n|[8] Remove Android App (Bloatware)            |\n|[9] Install Android App                       |\n|[10] Dump Thermal config file                 |\n|----------------------------------------------|\n| <ENTER> Exit                <N> Next Page -> |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
 
 			match user :
 				case "1":
-					print("\nErasing previous version of PyDroid...")
-					os.system("rm Main.py ")
+					print("\nChecking for PyDroid Updates ...\n")
+					time.sleep(2)
 
-					print("\nDownloading latest PyDroid, please wait...")
-					release = wget.download(pydroidtools, "Main.py")
+					if check_for_updates(version) == True :
+						print("\nDownloading latest version ...")
 
-					print("\nExiting from previous PyDroid version and launching new version...")
-					user = ""
-					os.system("python3 Main.py")
+
+						print("\nErasing previous version of PyDroid...")
+						os.system("rm Main.py ")
+
+						print("\nDownloading latest PyDroid, please wait...")
+						release = wget.download(pydroidtools, "Main.py")
+
+						print("\nExiting from previous PyDroid version and launching new version...")
+						user = ""
+						os.system("python3 Main.py")
+
+					else :
+						print("\nCurrent installed version : %s \nLatest Available Version : %s " % (version, latest_version(version)) )
+						time.sleep(5)
+
 
 
 				case "2":
@@ -343,10 +384,10 @@ while user != "":
 				case "N" | "n" :
 
 					if my_device_model == "No ADB device found" :
-						user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+						user = input("""%s|Device : %s | <L> To Refresh |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version %s                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model, version))
 
 					else: 
-						user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version 1.0-6                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model))
+						user = input("""%s|Current Device : %s|<R> Recovery <F> Fastboot <T> Reboot <K> Kill |\n|----------------------------------------------|\n|Choose one of the following options:          |\n|----------------------------------------------|\n|[11] Android Device Backup                    |\n|[12] Backup current Android boot.img          |\n|[13] Send file over ADB                       |\n|[14] Sideload OTA file                        |\n|[15] Modify Screen DPI                        |\n|----------------------------------------------|\n| <- <P> Previous Page            <ENTER> Exit |\n|----------------------------------------------|    \n| Version %s                     ©daviiid99 |\n ----------------------------------------------    \n""" % (header, my_device_model, version))
 
 					match user :
 						case "11":
