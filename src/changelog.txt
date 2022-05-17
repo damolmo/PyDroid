@@ -1,1 +1,2 @@
 - Show latest changelog on display
+- Testing the newline on changelog
