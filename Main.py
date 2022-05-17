@@ -122,7 +122,7 @@ def check_for_updates(version) :
 
 	return message
 
-def latest_version(version) :
+def latest_version() :
 	# Read the version string from an external text document
 	os.system("rm -f version.txt")
 	os.system("wget https://raw.githubusercontent.com/daviiid99/PyDroid/Linux/src/version.txt")
@@ -132,6 +132,14 @@ def latest_version(version) :
 
 	return version_str
 
+def latest_changelog() :
+	# Read the version string from an external text document
+	os.system("rm -f changelog.txt")
+	os.system("wget https://raw.githubusercontent.com/daviiid99/PyDroid/Linux/src/changelog.txt")
+	changelog_str = Path('changelog.txt').read_text()
+	os.system("rm -f changelog.txt")
+
+	return changelog_str
 
 
 # ======================== End of Functions ================================
@@ -198,21 +206,27 @@ while user != "":
 					time.sleep(2)
 
 					if check_for_updates(version) == True :
-						print("\nDownloading latest version ...")
+						user = input("\n%s|New Available version : %s    	       |\n ---------------------------------------------- \n Changelog : 				        \n%s 	        \n ----------------------------------------------- \n\nUpgrade to latest version ? (Y|N)\n " % (header, latest_version(), latest_changelog()) )
+						match user :
+							case "Y" | "y" :
 
+								print("\nDownloading latest version ...")
+								print("\nErasing previous version of PyDroid...")
+								os.system("rm Main.py ")
+								print("\nDownloading latest PyDroid, please wait...")
+								release = wget.download(pydroidtools, "Main.py")
+								print("\nExiting from previous PyDroid version and launching new version...")
+								user = ""
+								os.system("python3 Main.py")
 
-						print("\nErasing previous version of PyDroid...")
-						os.system("rm Main.py ")
+							case "N" | "n" :
 
-						print("\nDownloading latest PyDroid, please wait...")
-						release = wget.download(pydroidtools, "Main.py")
+								print("\nOperation cancelled by the user")
+								time.sleep(2)
 
-						print("\nExiting from previous PyDroid version and launching new version...")
-						user = ""
-						os.system("python3 Main.py")
 
 					else :
-						print("\nCurrent installed version : %s \nLatest Available Version : %s " % (version, latest_version(version)) )
+						print("\nCurrent installed version : %s \nLatest Available Version : %s " % (version, latest_version()) )
 						time.sleep(5)
 
 
