@@ -1,2 +1,3 @@
 - Show latest changelog on display
-- Testing the newline on changelog
+- Bug fixes and other improvements
+- Improve the update method
