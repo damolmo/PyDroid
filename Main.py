@@ -159,7 +159,7 @@ ota_package = "android_ota.zip"
 # Other variables
 DATE_FORMAT = '%y%m%d'
 user = 0 # For keyboard input 
-version = "1.0-7"
+version = "1.0-8"
 header ="""
  ----------------------------------------------
 |     ____        ____            _     _      |
